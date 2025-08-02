@@ -1,0 +1,42 @@
+<?php
+include 'admin_check.php';
+include 'includes/db.php';
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header>
+    <h1>🛠️ Admin Dashboard</h1>
+    <nav>
+      <a href="admin_dashboard.php">Dashboard</a>
+      <a href="add_product.php">Add Product</a>
+      <a href="logout.php">Logout</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="form-section">
+      <div class="form-card">
+        <h3>All Products</h3>
+        <?php
+        $result = $conn->query("SELECT * FROM products ORDER BY id DESC");
+        while ($product = $result->fetch_assoc()):
+        ?>
+          <div style="margin-bottom: 10px; border-bottom: 1px solid #ccc;">
+            <strong><?= htmlspecialchars($product['name']) ?></strong><br>
+            ₹<?= $product['price'] ?> — Stock: <?= $product['stock'] ?>
+          </div>
+        <?php endwhile; ?>
+      </div>
+    </section>
+  </main>
+
+</body>
+</html>
