@@ -38,52 +38,160 @@ $products = $conn->query($query);
   <title>Store - Handcrafted Products</title>
   <link rel="stylesheet" href="css/style.css">
   <style>
-    body { font-family: 'Roboto', sans-serif; margin: 0; background: #f2f2f2; }
-    header { background: #222; color: #fff; padding: 20px 30px; display: flex; justify-content: space-between; }
-    header h1 { margin: 0; }
-    nav a { color: white; text-decoration: none; margin-left: 20px; }
+    html, body {
+  height: 100%;
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  background: #f2f2f2;
+  display: flex;
+  flex-direction: column;
+}
 
-    .store-container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
-    .filter-bar { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 25px; }
-    .filter-bar input, .filter-bar select {
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 16px;
-      min-width: 180px;
-    }
+header {
+  background: #222;
+  color: #fff;
+  padding: 20px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
-    .product-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 25px;
-    }
+header h1 {
+  margin: 0;
+}
 
-    .product-card {
-      background: white;
-      border-radius: 10px;
-      padding: 15px;
-      text-align: center;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-      transition: transform 0.2s;
-    }
-    .product-card:hover { transform: translateY(-5px); }
-    .product-card img {
-      width: 100%; height: 180px; object-fit: cover; border-radius: 6px;
-    }
-    .product-card h3 { margin: 10px 0 5px; font-size: 18px; color: #333; }
-    .product-card p { margin: 5px 0; color: #555; }
-    .product-card a {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 8px 14px;
-      background: #0077cc;
-      color: white;
-      text-decoration: none;
-      border-radius: 6px;
-    }
+nav a {
+  color: white;
+  text-decoration: none;
+  margin-left: 20px;
+}
 
-    footer { text-align: center; padding: 20px; margin-top: 40px; color: #777; background: #eee; }
+.store-container {
+  flex: 1; /* pushes footer down */
+  max-width: 1200px;
+  margin: 30px auto;
+  padding: 0 20px;
+}
+
+.filter-bar {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-bottom: 25px;
+  align-items: center;
+  justify-content: space-between; /* space between filters and clear button */
+}
+
+.filter-left {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.clear-btn {
+  background: #dc3545;
+  color: white;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.clear-btn:hover {
+  background: #b52a37;
+}
+
+
+.filter-bar input,
+.filter-bar select {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  min-width: 180px;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 25px;
+}
+
+.product-card {
+  background: white;
+  border-radius: 10px;
+  padding: 15px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  transition: transform 0.2s;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+}
+
+.product-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.product-card h3 {
+  margin: 10px 0 5px;
+  font-size: 18px;
+  color: #333;
+}
+
+.product-card p {
+  margin: 5px 0;
+  color: #555;
+}
+
+.product-card a {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 8px 14px;
+  background: #0077cc;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  background: #eee;
+  color: #777;
+  margin-top: auto; /* keeps footer at bottom */
+}
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* ✅ 4 per row */
+  gap: 25px;
+}
+
+@media (max-width: 1200px) {
+  .product-grid {
+    grid-template-columns: repeat(3, 1fr); /* ✅ 3 per row on medium screens */
+  }
+}
+
+@media (max-width: 768px) {
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr); /* ✅ 2 per row on tablets */
+  }
+}
+
+@media (max-width: 480px) {
+  .product-grid {
+    grid-template-columns: 1fr; /* ✅ 1 per row on mobile */
+  }
+}
+
+
   </style>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -111,22 +219,28 @@ $products = $conn->query($query);
 
 <div class="store-container">
   <form method="GET" class="filter-bar" id="filter-form">
-    <input type="text" name="search" placeholder="🔍 Search..." value="<?= htmlspecialchars($search) ?>">
+    <div class="filter-left">
+      <input type="text" name="search" placeholder="🔍 Search..." value="<?= htmlspecialchars($search) ?>">
 
-    <select name="price">
-      <option value="">💰 Price</option>
-      <option value="low" <?= $price_filter === 'low' ? 'selected' : '' ?>>Under ₹500</option>
-      <option value="mid" <?= $price_filter === 'mid' ? 'selected' : '' ?>>₹501–₹1000</option>
-      <option value="high" <?= $price_filter === 'high' ? 'selected' : '' ?>>Above ₹1000</option>
-    </select>
+      <select name="price">
+        <option value="">💰 Price</option>
+        <option value="low" <?= $price_filter === 'low' ? 'selected' : '' ?>>Under ₹500</option>
+        <option value="mid" <?= $price_filter === 'mid' ? 'selected' : '' ?>>₹501–₹1000</option>
+        <option value="high" <?= $price_filter === 'high' ? 'selected' : '' ?>>Above ₹1000</option>
+      </select>
 
-    <select name="sort">
-      <option value="">🕒 Sort</option>
-      <option value="price_asc" <?= $sort === 'price_asc' ? 'selected' : '' ?>>Price ↑</option>
-      <option value="price_desc" <?= $sort === 'price_desc' ? 'selected' : '' ?>>Price ↓</option>
-      <option value="name" <?= $sort === 'name' ? 'selected' : '' ?>>Name A-Z</option>
-    </select>
+      <select name="sort">
+        <option value="">🕒 Sort</option>
+        <option value="price_asc" <?= $sort === 'price_asc' ? 'selected' : '' ?>>Price Low - High</option>
+        <option value="price_desc" <?= $sort === 'price_desc' ? 'selected' : '' ?>>Price High - Low</option>
+        <option value="name" <?= $sort === 'name' ? 'selected' : '' ?>>Name A-Z</option>
+      </select>
+    </div>
+
+    <!-- ✅ Clear button resets all filters -->
+    <button type="button" class="clear-btn" onclick="window.location.href='store.php'">Clear Filters</button>
   </form>
+
 
   <div class="product-grid">
     <?php if ($products->num_rows > 0): ?>

@@ -672,7 +672,7 @@ function toggleAddForm() {
 }
 </style>
 
-<?php endif; ?>
+<?php endif; ?>   
 
   </div>
 </div>

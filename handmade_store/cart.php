@@ -37,7 +37,17 @@ if (isset($_GET['remove'])) {
     header { background: #222; color: white; padding: 20px 30px; display: flex; justify-content: space-between; }
     nav a { color: white; text-decoration: none; margin-left: 20px; }
 
-    .cart-container { max-width: 1000px; margin: 40px auto; padding: 20px; background: white; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+    .cart-container {
+  width: 80%;              /* take 80% of the page width */
+  max-width: 1000px;       /* don’t stretch beyond 1000px */
+  min-width: 600px;        /* prevent it from becoming too skinny */
+  margin: 40px auto;       /* center horizontally */
+  padding: 20px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
     h2 { text-align: center; color: #333; }
 
     table { width: 100%; border-collapse: collapse; margin-top: 20px; }
@@ -56,7 +66,38 @@ if (isset($_GET['remove'])) {
       padding: 10px 18px; background: #0077cc; color: white; border: none; border-radius: 6px; cursor: pointer;
     }
     .total-box { text-align: right; margin-top: 20px; font-size: 18px; }
-    footer { text-align: center; margin-top: 40px; padding: 20px; background: #eee; color: #777; }
+        html, body {
+      height: 100%;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .cart-container {
+      flex: 1; /* push footer down */
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: #eee;
+      color: #777;
+      margin-top: auto; /* ensures footer stays at bottom */
+    }
+
+    .continue-btn {
+      padding: 10px 18px;
+      background: #555;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .continue-btn:hover {
+      background: #333;
+    }
+
   </style>
 </head>
 <body>
@@ -101,9 +142,11 @@ if (isset($_GET['remove'])) {
         }, $products)), 2) ?></span></strong></p>
       </div>
 
-      <div style="text-align:right; margin-top:20px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:20px;">
+        <a href="store.php" class="continue-btn" style="text-decoration:none; display:inline-block;">⬅ Continue Shopping</a>
         <a href="checkout.php" class="checkout-btn" style="text-decoration:none; display:inline-block;">Proceed to Checkout</a>
-        </div>
+      </div>
+
 
     </form>
   <?php else: ?>
